@@ -33,11 +33,11 @@ def plot_g_value_changes(points, ax):
     ax.set_xlabel('Nr iteracji')
     ax.set_ylabel('Wartość funkcji g')
 
-def make_plots(grad):
+def make_plots(points):
     fig = plt.figure()
     fig.suptitle('Wyniki eksperymentu')
-    plot_g_function_with_points(grad.get_points(), fig.add_subplot(2, 1, 1, projection='3d'))
-    plot_g_value_changes(grad.get_points(), fig.add_subplot(2, 1, 2))
+    plot_g_function_with_points(points, fig.add_subplot(2, 1, 1, projection='3d'))
+    plot_g_value_changes(points, fig.add_subplot(2, 1, 2))
     plt.show()
 
 def test_gradient(start_point, step_size, max_iteration):
@@ -50,7 +50,7 @@ def test_gradient(start_point, step_size, max_iteration):
     local_min = grad.get_local_min()
     print(f'Found local minimum -> {local_min}')
     print(f'Function value in minimum -> {g(local_min):.2f}')
-    make_plots(grad)
+    make_plots(grad.get_points())
 
 def main():
     argv = sys.argv[1:]
