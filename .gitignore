@@ -6,7 +6,9 @@ __pycache__/
 # Other binary files
 *.zip
 *.pdf
+*.png
 
 # Documentation
 **.md
+**.html
 !**/README.md

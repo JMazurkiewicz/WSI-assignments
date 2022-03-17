@@ -36,7 +36,7 @@ def test_gradient(gradient_params):
     print(f'Start point -> {gradient_params[0]}')
     print(f'Step size -> {gradient_params[1]}')
     print(f'Max iterations -> {gradient_params[2]}')
-    print(f'Local minimum -> {grad.get_local_min():.2f}')
+    print(f'Found local minimum -> {grad.get_local_min():.2f}')
     make_plots(grad)
 
 def main():
