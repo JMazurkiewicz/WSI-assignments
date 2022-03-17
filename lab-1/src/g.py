@@ -26,7 +26,7 @@ def make_g_function_with_points_plot(points, place):
     z = g([x, y])
     place.plot_surface(x, y, z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 
-    for point in points:
+    for point in points[::10]:
         place.scatter(point[0], point[1], g(point))
 
 def make_iterations_vs_value_plot(points, place):
@@ -51,7 +51,11 @@ def test_gradient(gradient_params):
     print(f'Start point -> ({gradient_params[0]}, {gradient_params[1]})')
     print(f'Step size -> {gradient_params[2]}')
     print(f'Max iterations -> {gradient_params[3]}')
-    print(f'Local minimum -> {grad.get_local_min()}')
+
+    local_min = grad.get_local_min()
+    print(f'Found local minimum -> {local_min}')
+    print(f'Function value in minimum -> {g(local_min):.2f}')
+
     make_plots(grad)
 
 def main():
