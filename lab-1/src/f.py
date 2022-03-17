@@ -1,6 +1,6 @@
 # Author: Jakub Mazurkiewicz
 import sys
-from gradient import Gradient
+from gradient import GradientDescent
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -32,7 +32,7 @@ def make_plots(grad):
     plt.show()
 
 def test_gradient(gradient_params):
-    grad = Gradient(nabla_f, *gradient_params)
+    grad = GradientDescent(nabla_f, *gradient_params)
     print(f'Start point -> {gradient_params[0]}')
     print(f'Step size -> {gradient_params[1]}')
     print(f'Max iterations -> {gradient_params[2]}')

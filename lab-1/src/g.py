@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
-from gradient import Gradient
+from gradient import GradientDescent
 
 def _exp1(x):
     return np.exp(-x[0] ** 2 - x[1] ** 2)
@@ -47,7 +47,7 @@ def make_plots(grad):
 def test_gradient(gradient_params):
     np.set_printoptions(precision=2)
 
-    grad = Gradient(nabla_g, gradient_params[0:2], *gradient_params[2:])
+    grad = GradientDescent(nabla_g, gradient_params[0:2], *gradient_params[2:])
     print(f'Start point -> ({gradient_params[0]}, {gradient_params[1]})')
     print(f'Step size -> {gradient_params[2]}')
     print(f'Max iterations -> {gradient_params[3]}')

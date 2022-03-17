@@ -1,7 +1,7 @@
 # Author: Jakub Mazurkiewicz
 import numpy as np
 
-class Gradient:
+class GradientDescent:
     def __init__(self, nabla_func, start_point: np.array, step_size: float, max_iteration: int):
         self.local_min = start_point
         self.points = [np.array(start_point)]
