@@ -9,6 +9,6 @@ __pycache__/
 *.png
 
 # Documentation
-**.md
-**.html
-!**/README.md
+*.md
+*.html
+!README.md
