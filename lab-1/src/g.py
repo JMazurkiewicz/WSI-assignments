@@ -41,7 +41,7 @@ def make_plots(points):
     plt.show()
 
 def test_gradient(start_point, step_size, max_iteration):
-    np.set_printoptions(precision=2)
+    np.set_printoptions(precision=4)
     print(f'Start point -> ({start_point[0]}, {start_point[1]})')
     print(f'Step size -> {step_size}')
     print(f'Max iterations -> {max_iteration}')
@@ -49,7 +49,7 @@ def test_gradient(start_point, step_size, max_iteration):
     grad = GradientDescent(nabla_g, start_point, step_size, max_iteration)
     local_min = grad.get_local_min()
     print(f'Found local minimum -> {local_min}')
-    print(f'Function value in minimum -> {g(local_min):.2f}')
+    print(f'Function value in minimum -> {g(local_min):.4f}')
     make_plots(grad.get_points())
 
 def main():

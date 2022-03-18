@@ -38,8 +38,8 @@ def test_gradient(start_point, step_size, max_iteration):
 
     grad = GradientDescent(nabla_f, start_point, step_size, max_iteration)
     local_min = grad.get_local_min()
-    print(f'Found local minimum -> {local_min:.2f}')
-    print(f'Function value in minimum -> {f(local_min):.2f}')
+    print(f'Found local minimum -> {local_min:.4f}')
+    print(f'Function value in minimum -> {f(local_min):.4f}')
     make_plots(grad.get_points())
 
 def main():
