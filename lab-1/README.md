@@ -1,3 +1,5 @@
 # Assignment 1
 
-Goal: implementation of descent gradient algorithm.
+Goal: implement descent gradient algorithm.
+
+Score: **7/7**
