@@ -1,3 +1,4 @@
+# Author: Jakub Mazurkiewicz
 from dataclasses import dataclass
 import random
 import numpy as np
@@ -32,6 +33,7 @@ class GeneticAlgorithm:
             crossedover = self._do_crossover(selected)
             self.population = self._do_mutations(crossedover)
         print('')
+        self._cache_generation_stats()
 
     def _do_roulette_selection(self):
         fitness_sum = sum(self.fitnesses)
@@ -77,11 +79,17 @@ class GeneticAlgorithm:
             file.write(f'best:   {self.stats[-1].best}\n')
             file.write(f'worst:  {self.stats[-1].worst}\n')
 
-    def dump_generation_history(self, file_name='history.log'):
-        with open(file_name, 'w') as file:
-            for i, stat in enumerate(self.stats):
-                file.write(f'{i + 1:>5}) mean={stat.mean}, stddev={stat.stddev:.3f}')
-                file.write(f', best={stat.best}, worst={stat.worst}\n')
+    def dump_avg_for_each_generation(self, file):
+        for stat in self.stats:
+            file.write(f'{stat.mean} ')
+        file.write('\n')
 
-    def write_best_individuals_for_each_generation(file):
+    def dump_best_for_each_generation(self, file):
+        for stat in self.stats:
+            file.write(f'{stat.best} ')
+        file.write('\n')
 
+    def dump_worst_for_each_generation(self, file):
+        for stat in self.stats:
+            file.write(f'{stat.worst} ')
+        file.write('\n')
