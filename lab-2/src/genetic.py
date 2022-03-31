@@ -70,23 +70,18 @@ class GeneticAlgorithm:
         stats.worst = min(self.fitnesses)
         self.stats += [stats]
 
-    def get_final_population(self):
-        return self.population
-
-    def dump_final_population(self, file_name='final_population.log'):
+    def dump_final_stats(self, file_name='final_stats.log'):
         with open(file_name, 'w') as file:
-            for i, individual in enumerate(self.population):
-                file.write(f'{i + 1:>5}) {individual}\n\n')
-
-    def dump_final_fitnesses(self, file_name='final_fitnesses.log'):
-        with open(file_name, 'w') as file:
-            for i, fitness in enumerate(self.fitnesses):
-                file.write(f'{i + 1:>5}) {fitness}\n')
             file.write(f'mean:   {self.stats[-1].mean}\n')
             file.write(f'stddev: {self.stats[-1].stddev}\n')
+            file.write(f'best:   {self.stats[-1].best}\n')
+            file.write(f'worst:  {self.stats[-1].worst}\n')
 
     def dump_generation_history(self, file_name='history.log'):
         with open(file_name, 'w') as file:
             for i, stat in enumerate(self.stats):
                 file.write(f'{i + 1:>5}) mean={stat.mean}, stddev={stat.stddev:.3f}')
                 file.write(f', best={stat.best}, worst={stat.worst}\n')
+
+    def write_best_individuals_for_each_generation(file):
+

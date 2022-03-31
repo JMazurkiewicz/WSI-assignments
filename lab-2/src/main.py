@@ -3,10 +3,8 @@ from audioop import cross
 import sys
 import rocket_flight as rf
 from genetic import GeneticAlgorithm
-import matplotlib.pyplot as plt
 
-def make_plots():
-    pass
+NUMBER_OF_RUNS = 30
 
 def test_evolution(prob_1, pop_size, crossover_prob, mut_prob, iter_limit):
     print(f'Chance of `1`s in genome: {prob_1}')
@@ -15,12 +13,15 @@ def test_evolution(prob_1, pop_size, crossover_prob, mut_prob, iter_limit):
     print(f'Probability of mutation: {mut_prob}')
     print(f'Number of generations: {iter_limit}')
 
-    population = rf.create_random_rocket_flights(pop_size, prob_1)
-    algo = GeneticAlgorithm(rf.calc_rocket_flight_fitness, population, crossover_prob, mut_prob, iter_limit)
+    best_for_each_generation_f = open('best_for_each_generation.log')
 
-    algo.dump_final_population()
-    algo.dump_final_fitnesses()
-    algo.dump_generation_history()
+    for _ in range(NUMBER_OF_RUNS):
+        population = rf.create_random_rocket_flights(pop_size, prob_1)
+        algo = GeneticAlgorithm(rf.calc_rocket_flight_fitness, population, crossover_prob, mut_prob, iter_limit)
+        algo.dump_final_population()
+        algo.dump_final_stats()
+        algo.dump_generation_history()
+        algo.write_best_individuals_for_each_generation(best_for_each_generation_f)
 
 def main():
     argv = sys.argv[1:]
