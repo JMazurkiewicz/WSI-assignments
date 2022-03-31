@@ -1,4 +1,5 @@
 # Author: Jakub Mazurkiewicz
+from audioop import cross
 import sys
 import rocket_flight as rf
 from genetic import GeneticAlgorithm
@@ -7,21 +8,31 @@ import matplotlib.pyplot as plt
 def make_plots():
     pass
 
-def test_evolution(prob_1):
+def test_evolution(prob_1, pop_size, crossover_prob, mut_prob, iter_limit):
     print(f'Chance of `1`s in genome: {prob_1}')
+    print(f'Population size: {pop_size}')
+    print(f'Probability of crossover: {crossover_prob}')
+    print(f'Probability of mutation: {mut_prob}')
+    print(f'Number of generations: {iter_limit}')
 
-    population = rf.create_random_rocket_flights(prob_1)
-    algo = GeneticAlgorithm(rf.calc_rocket_flight_fitness, population, 0.5, 0.1, 100) # TODO dane z CMD
-    # TODO wykresy i pisanie tabelki do pliku (moduł MarkdownTableWritter???)
+    population = rf.create_random_rocket_flights(pop_size, prob_1)
+    algo = GeneticAlgorithm(rf.calc_rocket_flight_fitness, population, crossover_prob, mut_prob, iter_limit)
+
+    algo.dump_final_population()
+    algo.dump_final_fitnesses()
+    algo.dump_generation_history()
 
 def main():
     argv = sys.argv[1:]
-    if len(argv) != 0: # TODO zamiast 0 ilość oczekiwanych parametrów
+    if len(argv) == 5:
         prob_1 = float(argv[0])
-        test_evolution(prob_1)
+        pop_size = int(argv[1])
+        crossover_prob = float(argv[2])
+        mut_prob = float(argv[3])
+        iter_limit = int(argv[4])
+        test_evolution(prob_1, pop_size, crossover_prob, mut_prob, iter_limit)
     else:
-        # TODO zamiast 0 ilość oczekiwanych parametrów
-        print(f'Invalid amount of arguments: expected 0 arguments, got {len(argv)}.')
+        print(f'Invalid amount of arguments: expected 5 arguments, got {len(argv)}.')
 
 if __name__ == '__main__':
     main()

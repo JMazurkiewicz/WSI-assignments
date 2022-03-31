@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+__test__.py
 
 # Other binary files
 *.zip
@@ -12,3 +13,4 @@ __pycache__/
 *.md
 *.html
 !README.md
+*.log
