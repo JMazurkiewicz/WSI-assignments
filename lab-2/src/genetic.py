@@ -70,7 +70,7 @@ class GeneticAlgorithm:
         stats.stddev = np.std(self.fitnesses)
         stats.best = max(self.fitnesses)
         stats.worst = min(self.fitnesses)
-        self.stats += [stats]
+        self.stats.append(stats)
 
     def dump_final_stats(self, file_name='final_stats.log'):
         with open(file_name, 'w') as file:

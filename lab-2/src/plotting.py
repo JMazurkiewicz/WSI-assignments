@@ -24,14 +24,22 @@ def plot_avg_of_best(ax):
     for i, avg_of_best in enumerate(means):
         ax.plot(i, avg_of_best, marker='o', markersize=5)
     ax.set_xlabel('Numer generacji')
-    ax.set_ylabel('Średni zysk z najlepszych osobników ze wszystkich uruchomień')
+    ax.set_ylabel('Średni zysk z najlepszych osobników\nze wszystkich uruchomień')
+
+def plot_avg_of_worst(ax):
+    data = np.loadtxt('worst_for_each_generation.log')
+    means = np.mean(data, axis=0)
+    for i, avg_of_worst in enumerate(means):
+        ax.plot(i, avg_of_worst, marker='o', markersize=5)
+    ax.set_xlabel('Numer generacji')
+    ax.set_ylabel('Średni zysk z najgorszych osobników\nze wszystkich uruchomień')
 
 def main():
-    fig, axes = plt.subplots(2)
+    fig, axes = plt.subplots(3)
     fig.suptitle('Wyniki eksperymentu')
-    #plot_best_individuals(axes[0])
-    plot_avg_of_best(axes[0])
-    plot_means(axes[1])
+    plot_means(axes[0])
+    plot_avg_of_best(axes[1])
+    plot_avg_of_worst(axes[2])
     plt.show()
 
 if __name__ == '__main__':
