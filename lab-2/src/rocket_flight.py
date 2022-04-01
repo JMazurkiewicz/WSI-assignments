@@ -26,8 +26,12 @@ def calc_rocket_flight_fitness(flight):
     score = -times_engine_on
 
     for step in flight:
-        mass -= step
-        acceleration = _calc_rocket_acceleration(mass) + _calc_friction_acceleration(velocity, mass) + GRAVITY
+        rocket_acceleration = 0
+        if step == 1:
+            mass -= 1
+            rocket_acceleration = _calc_rocket_acceleration(mass)
+
+        acceleration = rocket_acceleration + _calc_friction_acceleration(velocity, mass) + GRAVITY
         velocity += acceleration * TIME_UNIT
         height += (velocity * TIME_UNIT) + (acceleration * TIME_UNIT ** 2) / 2
 
