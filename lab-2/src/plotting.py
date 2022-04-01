@@ -3,24 +3,24 @@ from sys import argv
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_means(ax, prefix=''):
-    data = np.loadtxt(f'{prefix}avg_for_each_generation.log')
+def plot_means(ax, fname_prefix=''):
+    data = np.loadtxt(f'{fname_prefix}avg_for_each_generation.log')
     means = np.mean(data, axis=0)
     ax.scatter(range(len(means)), means)
     ax.plot(range(len(means)), means)
     ax.set_xlabel('Numer generacji')
     ax.set_ylabel('Średni zysk ze wszystkich uruchomień')
 
-def plot_avg_of_best(ax, prefix=''):
-    data = np.loadtxt(f'{prefix}best_for_each_generation.log')
+def plot_avg_of_best(ax, fname_prefix=''):
+    data = np.loadtxt(f'{fname_prefix}best_for_each_generation.log')
     means = np.mean(data, axis=0)
     ax.scatter(range(len(means)), means)
     ax.plot(range(len(means)), means)
     ax.set_xlabel('Numer generacji')
     ax.set_ylabel('Średni zysk z najlepszych osobników\nze wszystkich uruchomień')
 
-def plot_avg_of_worst(ax, prefix=''):
-    data = np.loadtxt(f'{prefix}worst_for_each_generation.log')
+def plot_avg_of_worst(ax, fname_prefix=''):
+    data = np.loadtxt(f'{fname_prefix}worst_for_each_generation.log')
     means = np.mean(data, axis=0)
     ax.scatter(range(len(means)), means)
     ax.plot(range(len(means)), means)

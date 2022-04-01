@@ -5,6 +5,7 @@ import rocket_flight as rf
 from genetic import GeneticAlgorithm
 
 NUMBER_OF_RUNS = 30
+assert NUMBER_OF_RUNS > 1
 
 def test_evolution(prob_1, pop_size, crossover_prob, mut_prob, iter_limit):
     print(f'Chance of `1`s in genome: {prob_1}')

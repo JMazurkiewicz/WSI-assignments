@@ -14,3 +14,4 @@ __test__.py
 *.html
 !README.md
 *.log
+img/
