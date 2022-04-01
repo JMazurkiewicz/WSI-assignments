@@ -2,7 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
-__test__.py
+
+# Secrets
+__test*.py
+__*.sh
 
 # Other binary files
 *.zip

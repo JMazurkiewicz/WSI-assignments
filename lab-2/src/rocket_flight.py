@@ -26,7 +26,7 @@ def calc_rocket_flight_fitness(flight):
     score = -times_engine_on
 
     for step in flight:
-        rocket_acceleration = 0
+        rocket_acceleration = 0.0
         if step == 1:
             mass -= 1
             rocket_acceleration = _calc_rocket_acceleration(mass)
