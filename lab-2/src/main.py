@@ -1,5 +1,6 @@
 # Author: Jakub Mazurkiewicz
 import sys
+import time as tm
 import rocket_flight as rf
 from genetic import GeneticAlgorithm
 
@@ -16,15 +17,16 @@ def test_evolution(prob_1, pop_size, crossover_prob, mut_prob, iter_limit):
     avg_for_each_generation_f = open('avg_for_each_generation.log', 'w')
     worst_for_each_generation_f = open('worst_for_each_generation.log', 'w')
 
+    start = tm.time()
     for i in range(NUMBER_OF_RUNS):
         population = rf.create_random_rocket_flights(pop_size, prob_1)
-        print(f'{i + 1:>2}) ', end='')
+        print(f'Run {i + 1}...')
         algo = GeneticAlgorithm(rf.calc_rocket_flight_fitness, population, crossover_prob, mut_prob, iter_limit)
-
         algo.dump_final_stats()
         algo.dump_best_for_each_generation(best_for_each_generation_f)
         algo.dump_avg_for_each_generation(avg_for_each_generation_f)
         algo.dump_worst_for_each_generation(worst_for_each_generation_f)
+    print(f'Elapsed: {tm.time() - start:.2f}s')
 
 def main():
     argv = sys.argv[1:]

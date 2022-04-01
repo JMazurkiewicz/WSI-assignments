@@ -1,13 +1,14 @@
+# Author: Jakub Mazurkiewicz
 import numpy.random as npr
 
-FLIGHT_LENGTH = 200
+FLIGHT_DURATION = 200
 REQUIRED_HEIGHT = 750
 EMPTY_ROCKET_MASS = 20
 GRAVITY = -0.9
 TIME_UNIT = 1.0
 
 def create_random_rocket_flights(pop_size, prob_1=0.5):
-    return [npr.binomial(n=1, p=prob_1, size=[FLIGHT_LENGTH]) for _ in range(pop_size)]
+    return [npr.binomial(n=1, p=prob_1, size=[FLIGHT_DURATION]) for _ in range(pop_size)]
 
 def _calc_rocket_acceleration(mass):
     return 500 / mass
@@ -16,7 +17,7 @@ def _calc_friction_acceleration(velocity, mass):
     return (-0.06 * velocity * abs(velocity)) / mass
 
 def calc_rocket_flight_fitness(flight):
-    assert len(flight) == FLIGHT_LENGTH
+    assert len(flight) == FLIGHT_DURATION
 
     height = 0.0
     velocity = 0.0

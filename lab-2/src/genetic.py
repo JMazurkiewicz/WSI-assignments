@@ -24,15 +24,12 @@ class GeneticAlgorithm:
         self.fitnesses = [self.fitness_fn(i) for i in self.population]
 
     def _do_evolution(self, iteration_limit):
-        print('Evolution', end='')
-        for i in range(iteration_limit):
-            print('.', end='', flush=True)
+        for _ in range(iteration_limit):
             self._cache_generation_stats()
             self._calculate_fitnesses_for_current_population()
             selected = self._do_roulette_selection()
             crossedover = self._do_crossover(selected)
             self.population = self._do_mutations(crossedover)
-        print('')
         self._cache_generation_stats()
 
     def _do_roulette_selection(self):
