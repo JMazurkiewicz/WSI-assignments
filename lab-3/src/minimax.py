@@ -1,12 +1,9 @@
 # Author: Jakub Mazurkiewicz
 from math import inf
-from random import choice, random
+from random import choice
 from two_player_games.game import Game
-from two_player_games.move import Move
 from two_player_games.player import Player
 from two_player_games.state import State
-from typing import Union
-from numpy import unique
 class MinimaxAlgorithm:
     """Minimax algorithm with alpha-beta pruning"""
     def __init__(self, game: Game, max_depth: int, player: Player):
@@ -29,12 +26,12 @@ class MinimaxAlgorithm:
         print(f'BEST MOVE = {random_choice.column}')
         return random_choice
 
-    def _alphabeta(self, state: State, depth: int, alpha: int, beta: int) -> Union[int, Move]:
+    def _alphabeta(self, state: State, depth: int, alpha: int, beta: int):
         value = 0
         proposed_move = None
 
         if depth == 0 or state.is_finished():
-            value = self._heuristic(state)
+            value = self._heuristic(state, depth)
         elif state.get_current_player() is self.player:
             value = -inf
             for move in state.get_moves():
@@ -65,8 +62,9 @@ class MinimaxAlgorithm:
                 self.choices[value] += [proposed_move]
         return value
 
-    def _heuristic(self, state: State) -> int:
+    def _heuristic(self, state: State, depth: int) -> int:
+        FACTOR = inf
         if state.get_winner() is self.player:
-            return inf
+            return FACTOR
         else:
-            return -inf
+            return -FACTOR
