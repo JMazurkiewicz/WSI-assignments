@@ -23,15 +23,15 @@ def test_minimax(max_depth):
         redraw_game(game)
         if game.get_current_player() is not ai_player:
             print('Minimax makes a move...')
-            move = algo.get_next_move()
-            game.make_move(move)
-            #col = input('MINIMAX:Enter column number: ')
-            #game.make_move(ConnectFourMove(int(col)))
-            input('')
+            game.make_move(algo.get_next_move())
         else:
-            col = input('Enter column number: ')
-            game.make_move(ConnectFourMove(int(col)))
-
+            while True:
+                try:
+                    col = int(input('Enter column number: '))
+                    break
+                except ValueError:
+                    print('Invalid input. Try again...')
+            game.make_move(ConnectFourMove(col))
     redraw_game(game)
     announce_winner(game.get_winner())
 

@@ -1,6 +1,6 @@
 # Author: Jakub Mazurkiewicz
 from math import inf
-from random import choice
+import random
 from two_player_games.game import Game
 from two_player_games.player import Player
 from two_player_games.state import State
@@ -14,17 +14,9 @@ class MinimaxAlgorithm:
 
     def get_next_move(self):
         self.choices = {}
-        result = self._alphabeta(self.game.state, self.max_depth, -inf, inf)
-        print(f'CHOICES = {self.choices}')
-        print(f'RESULT = {result}')
-
-        best = max(self.choices.keys())
-        print(f'BEST_KEY = {best}')
-        possibs = self.choices[best]
-        print(f'ARRAY_SIZE = {len(possibs)}')
-        random_choice = choice(possibs)
-        print(f'BEST MOVE = {random_choice.column}')
-        return random_choice
+        self._alphabeta(self.game.state, self.max_depth, -inf, inf)
+        found_max = max(self.choices.keys())
+        return random.choice(self.choices[found_max])
 
     def _alphabeta(self, state: State, depth: int, alpha: int, beta: int):
         value = 0
