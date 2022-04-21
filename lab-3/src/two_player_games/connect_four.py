@@ -1,9 +1,9 @@
 from dataclasses import fields
-from move import Move
+from .move import Move
 from typing import Iterable, List, Optional, Tuple
-from game import Game
-from player import Player
-from state import State
+from .game import Game
+from .player import Player
+from .state import State
 
 class ConnectFour(Game):
     """Class that represents the hex game"""
