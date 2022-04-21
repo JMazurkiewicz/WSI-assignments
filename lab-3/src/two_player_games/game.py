@@ -62,6 +62,6 @@ class Game:
     def __str__(self) -> str:
         """
         Returns:
-            Printable text represenation of the game's state
+            Printable text representation of the game's state
         """
         return str(self.state)
