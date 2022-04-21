@@ -1,12 +1,17 @@
 # Author: Jakub Mazurkiewicz
 import sys
 from random import randint
-from time import sleep
 from two_player_games.connect_four import ConnectFour, ConnectFourMove
 from minimax import MinimaxAlgorithm
 
 def redraw_game(game):
     print(f'\x1B[2J{game}', flush=True)
+
+def announce_winner(winner):
+    if winner is None:
+        print('It\'s a tie!')
+    else:
+        print(f'Player {winner.char} won!')
 
 def test_minimax(max_depth):
     game = ConnectFour()
@@ -18,13 +23,17 @@ def test_minimax(max_depth):
         redraw_game(game)
         if game.get_current_player() is not ai_player:
             print('Minimax makes a move...')
-            game.make_move(algo.get_next_move())
-            #sleep(0.5)
+            move = algo.get_next_move()
+            game.make_move(move)
+            #col = input('MINIMAX:Enter column number: ')
+            #game.make_move(ConnectFourMove(int(col)))
+            input('')
         else:
-            column = input('Enter column number (first column is \'0\'): ')
-            game.make_move(ConnectFourMove(int(column)))
+            col = input('Enter column number: ')
+            game.make_move(ConnectFourMove(int(col)))
 
     redraw_game(game)
+    announce_winner(game.get_winner())
 
 def main():
     argv = sys.argv[1:]

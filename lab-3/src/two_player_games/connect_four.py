@@ -37,10 +37,18 @@ class ConnectFourMove(Move):
         self.column = column
         super().__init__()
 
+    def __repr__(self) -> str:
+        return f'{self.column}'
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, ConnectFourMove):
             return False
         return self.column == other.column
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, ConnectFourMove):
+            return False
+        return self.column < other.column
 
 
 class ConnectFourState(State):
