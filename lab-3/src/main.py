@@ -1,20 +1,11 @@
 # Author: Jakub Mazurkiewicz
-import math
 import os
 import sys
+from heuristic import heuristic
 from time import sleep
-from two_player_games.state import State
-from two_player_games.player import Player
 from random import randint
 from two_player_games.connect_four import ConnectFour, ConnectFourMove
 from minimax import MinimaxAlgorithm
-
-def heuristic(state: State, player: Player, max_depth: int, depth: int) -> int:
-    FACTOR = 1000000
-    if state.get_winner() is player:
-        return FACTOR * (max_depth - depth)
-    else:
-        return -FACTOR
 
 def readraw_game_board(game):
     os.system('clear')
@@ -30,13 +21,14 @@ def announce_winner(game):
 def minimax_vs_player(max_depth):
     game = ConnectFour()
     ai_player = game.get_players()[randint(0, 1)]
-    algo = MinimaxAlgorithm(game, max_depth, ai_player, heuristic)
+    algo = MinimaxAlgorithm(game, heuristic)
 
     while not game.is_finished():
         readraw_game_board(game)
         if ai_player is game.get_current_player():
             print('Minimax makes a move...')
-            game.make_move(algo.get_next_move())
+            move = algo.get_next_move(max_depth, ai_player)
+            game.make_move(move)
         else:
             while True:
                 try:
@@ -52,24 +44,22 @@ def minimax_vs_player(max_depth):
 def minimax_vs_minimax(max_depth1, max_depth2):
     DELAY = 0.8
     game = ConnectFour()
-
     player1 = game.get_players()[0]
-    algo1 = MinimaxAlgorithm(game, max_depth1, player1, heuristic)
     player2 = game.get_players()[1]
-    algo2 = MinimaxAlgorithm(game, max_depth2, player2, heuristic)
+    algo = MinimaxAlgorithm(game, heuristic)
 
     while not game.is_finished():
         readraw_game_board(game)
         if player1 is game.get_current_player():
-            game.make_move(algo1.get_next_move())
+            game.make_move(algo.get_next_move(max_depth1, player1))
         else:
-            game.make_move(algo2.get_next_move())
+            game.make_move(algo.get_next_move(max_depth2, player2))
         sleep(DELAY)
     readraw_game_board(game)
     announce_winner(game)
 
 def minimax_vs_minimax_automatic(max_depth1, max_depth2):
-    LOOP_COUNT = 1000
+    LOOP_COUNT = 500
     player1_win_counter = 0
     player2_win_counter = 0
     tie_counter = 0
@@ -79,14 +69,13 @@ def minimax_vs_minimax_automatic(max_depth1, max_depth2):
         game = ConnectFour()
         player1 = game.get_players()[0]
         player2 = game.get_players()[1]
-        algo1 = MinimaxAlgorithm(game, max_depth1, player1, heuristic)
-        algo2 = MinimaxAlgorithm(game, max_depth2, player2, heuristic)
+        algo = MinimaxAlgorithm(game, heuristic)
 
         while not game.is_finished():
             if game.get_current_player() is player1:
-                game.make_move(algo1.get_next_move())
+                game.make_move(algo.get_next_move(max_depth1, player1))
             else:
-                game.make_move(algo2.get_next_move())
+                game.make_move(algo.get_next_move(max_depth2, player2))
 
         if game.get_winner() is player1:
             player1_win_counter += 1

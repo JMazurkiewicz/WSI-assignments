@@ -1,56 +1,80 @@
 # Author: Jakub Mazurkiewicz
 from math import inf
 import random
+from tkinter import W
 from two_player_games.game import Game
+from two_player_games.move import Move
 from two_player_games.player import Player
 from two_player_games.state import State
+from typing import Tuple
 class MinimaxAlgorithm:
     """Minimax algorithm with alpha-beta pruning"""
-    def __init__(self, game: Game, max_depth: int, player: Player, heuristic):
+    def __init__(self, game: Game, heuristic):
         self.game = game
-        self.max_depth = max_depth
-        self.player = player
         self.heuristic = heuristic
-        self.possibilities = {}
+        self.depth_limit = 0
+        self.player = None
 
-    def get_next_move(self):
-        self.possibilities = {}
-        self._alphabeta(self.game.state, self.max_depth, -inf, inf)
-        found_max = max(self.possibilities.keys())
-        return random.choice(self.possibilities[found_max])
+    def get_next_move(self, depth_limit: int, player: Player) -> Move:
+        if depth_limit == 0:
+            return random.choices(self.game.state.get_moves())[0]
+        else:
+            self.depth_limit = depth_limit
+            self.player = player
+            return self._alphabeta(self.game.state, self.depth_limit, -inf, inf, True)[1]
 
-    def _alphabeta(self, state: State, depth: int, alpha: int, beta: int):
+    def _random_move(self):
+        return
+
+    def _alphabeta(self, node: State, depth: int, alpha: int, beta: int, max_player: bool) -> Tuple[int, Move]:
         value = 0
-        proposed_move = None
+        next_move = None
+        moves = node.get_moves()
 
-        if depth == 0 or state.is_finished():
-            value = self.heuristic(state, self.player, self.max_depth, depth)
-        elif state.get_current_player() is self.player:
+        if depth == 0 or node.is_finished():
+            return self.default_heuristic(node, depth), next_move
+        elif max_player:
             value = -inf
-            for move in state.get_moves():
-                child = state.make_move(move)
-                ab = self._alphabeta(child, depth - 1, alpha, beta)
-                value = max(value, ab)
-                alpha = max(alpha, value)
+            next_move = random.choice(moves)
+            for move in moves:
+                child = node.make_move(move)
 
+                new_value = max(value, self._alphabeta(child, depth - 1, alpha, beta, False)[0])
+                if new_value > value:
+                    value = new_value
+                    next_move = move
+                elif new_value == value:
+                    next_move = next_move if random.random() < 0.5 else move
+
+                alpha = max(alpha, value)
                 if value >= beta:
-                    proposed_move = move
                     break
+
+            return value, next_move
         else:
             value = inf
-            for move in state.get_moves():
-                child = state.make_move(move)
-                ab = self._alphabeta(child, depth - 1, alpha, beta)
-                value = min(value, ab)
-                beta = min(beta, value)
+            next_move = random.choice(moves)
+            for move in moves:
+                child = node.make_move(move)
 
+                new_value = min(value, self._alphabeta(child, depth - 1, alpha, beta, True)[0])
+                if new_value < value:
+                    value = new_value
+                    next_move = move
+                elif new_value == value:
+                    next_move = next_move if random.random() < 0.5 else move
+
+                beta = min(beta, value)
                 if value <= alpha:
-                    proposed_move = move
                     break
 
-        if proposed_move is not None:
-            if value not in self.possibilities:
-                self.possibilities[value] = [proposed_move]
-            else:
-                self.possibilities[value] += [proposed_move]
-        return value
+            return value, next_move
+
+    def default_heuristic(self, node: State, depth: int):
+        winner = node.get_winner()
+        if winner is self.player:
+            return inf
+        elif winner is not None:
+            return -inf
+        else:
+            return self.heuristic(node, depth, self.player)
