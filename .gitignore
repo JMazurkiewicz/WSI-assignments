@@ -12,6 +12,7 @@ __*.sh
 *.zip
 *.pdf
 *.png
+~$*
 
 # Documentation
 *.md
@@ -19,3 +20,4 @@ __*.sh
 !README.md
 *.log
 img/
+*.xlsx
