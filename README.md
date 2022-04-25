@@ -9,5 +9,5 @@
 ## Get repository
 
 ```bash
-git clone --recurse-submodules https://github.com/JMazurkiewicz/WSI-assignments.git
+git clone https://github.com/JMazurkiewicz/WSI-assignments.git
 ```
