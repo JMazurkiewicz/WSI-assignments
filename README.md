@@ -5,6 +5,7 @@
 * `lab-1` - descent gradient algorithm
 * `lab-2` - evolutionary algorithm
 * `lab-3` - minimax algorithm with alpha beta pruning
+* `lab-4` - regression and classification
 
 ## Get repository
 
