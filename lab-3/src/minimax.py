@@ -7,6 +7,7 @@ from two_player_games.move import Move
 from two_player_games.player import Player
 from two_player_games.state import State
 from typing import Tuple
+
 class MinimaxAlgorithm:
     """Minimax algorithm with alpha-beta pruning"""
     def __init__(self, game: Game, heuristic):
