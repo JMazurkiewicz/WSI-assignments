@@ -8,7 +8,7 @@ Score: **6/7**
 
 ## About
 
-The goal of the project is to find optimal usage of fuel for rocket flight described in `rocket_flight.py`.
+Program `main.py` finds optimal usage of fuel for rocket flight described in `rocket_flight.py`.
 
 ## How to run
 
