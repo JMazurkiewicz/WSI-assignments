@@ -1,5 +1,7 @@
 # Assignment 3
 
+## Goal
+
 Goal: implement minimax algorithm with alpha-beta pruning.
 
 Score: **6/7**
