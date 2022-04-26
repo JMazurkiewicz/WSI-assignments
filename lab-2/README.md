@@ -1,5 +1,7 @@
 # Assignment 2
 
+## Goal
+
 Goal: implement evolutionary algorithm.
 
 Score: **6/7**
