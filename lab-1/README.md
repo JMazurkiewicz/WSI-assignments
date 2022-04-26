@@ -8,7 +8,7 @@ Score: **7/7**
 
 ## About
 
-Programs `f.py` and `g.py` find local minimum of $f$ and $g$ functions:
+Programs `f.py` and `g.py` find local minimum of f and g functions:
 
 * f(x) = x^4
 * g(x1, x2) = 1.5 - exp(-x1^2 - x2^2) - 0.5exp(-(x1 - 1)^2 - (x2 + 2)^2)
