@@ -8,7 +8,7 @@ Score: **6/7**
 
 ## About
 
-The goal of the project is to implement minimax algorithm that can play ["Connect Four"](https://en.wikipedia.org/wiki/Connect_Four) game.
+Program `main.py` runs minimax algorithm that plays ["Connect Four"](https://en.wikipedia.org/wiki/Connect_Four) game with player (or with another minimax).
 
 ## How to run
 
