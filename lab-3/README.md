@@ -24,4 +24,4 @@ Available modes:
 
 ## Extra scripts
 
-Scripts from `src/two_player_games` directory come from [`two-player-games`](https://github.com/lychanl/two-player-games) repository by [lychanl](https://github.com/lychanl).
+Scripts from `two_player_games` directory come from [`two-player-games`](https://github.com/lychanl/two-player-games) repository by [lychanl](https://github.com/lychanl).
