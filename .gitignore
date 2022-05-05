@@ -21,3 +21,7 @@ __*.sh
 *.log
 img/
 *.xlsx
+
+# Lab 4 data sets
+lab-4/breast-cancer.names
+lab-4/breast-cancer.data
