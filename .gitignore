@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 .ipynb_checkpoints
 
+# Environment
+.vscode
+
 # Secrets
 __test*.py
 __*.sh
