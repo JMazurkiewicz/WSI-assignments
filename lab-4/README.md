@@ -21,3 +21,13 @@ wget https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer/bre
 ```
 
 ## How to run
+
+```bash
+python main.py
+```
+
+### Display data set
+
+```bash
+python id3_data.py <csv-file-path> <class-column>
+```

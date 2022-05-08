@@ -1,11 +1,11 @@
 # Author: Jakub Mazurkiewicz
 
 import sys
-from data_set import DataSet
+from id3_data import ReadyDataSets
 from id3 import Id3
 
 def run(max_depth: int):
-    ds = DataSet('breast-cancer.data', 9) # 9 - irradiat
+    ds = ReadyDataSets('breast-cancer.data', 9) # 9 - irradiat
     id3 = Id3(max_depth)
     id3.train(ds.get_training_set())
     # TODO: get stats, do validation and tests

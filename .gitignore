@@ -10,6 +10,8 @@ __pycache__/
 # Secrets
 __test*.py
 __*.sh
+__*.py
+!__*__.py
 
 # Other binary files
 *.zip
