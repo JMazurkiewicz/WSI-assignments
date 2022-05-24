@@ -4,6 +4,8 @@
 
 Goal: implement multilayer perceptron and chosen gradient optimization algorithm
 
+Score: **8/8**
+
 ## About
 
 Program `main.py` trains neural network with images of hand-written digits from MNIST set.
