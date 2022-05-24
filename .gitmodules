@@ -1,0 +1,3 @@
+[submodule "lab-5/neural_network"]
+	path = lab-5/neural_network
+	url = https://github.com/brusmichal/neural_network
