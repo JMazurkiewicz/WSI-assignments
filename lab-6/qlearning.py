@@ -1,7 +1,6 @@
 # Author: Jakub Mazurkiewicz
 from dataclasses import dataclass
 import random
-from time import sleep
 from typing import List
 import numpy as np
 from gym import Env
@@ -11,7 +10,7 @@ class Hyperparameters:
     learning_rate: float = 0.1
     discount_factor: float = 0.6
     epsilon: float = 0.1
-    episodes: int = 1000
+    episodes: int = 10000
 
     def __repr__(self):
         return '\n'.join([
@@ -22,14 +21,15 @@ class Hyperparameters:
         ])
 
 @dataclass
-class LearningStats:
+class EpisodesStats:
     penalty_count: int = 0
     total_reward: int = 0
 
 @dataclass
-class EvaluationStats:
-    avg_epoch_count: float = 0
-    avg_penalty: float = 0
+class EvaluationResult:
+    avg_epoch_count: float
+    avg_penalty: float
+    stats: List[EpisodesStats]
 
 class QLearning:
     def __init__(self, environment: Env, hyperparameters: Hyperparameters):
@@ -37,12 +37,11 @@ class QLearning:
         self.params = hyperparameters
         self.qtable = np.zeros((self.env.observation_space.n, self.env.action_space.n))
 
-    def learn(self, seed=None) -> List[LearningStats]:
+    def learn(self, seed=None) -> List[EpisodesStats]:
         stat_list = []
         for _ in range(self.params.episodes):
-            stats = LearningStats()
-            seed = 0xABBA if seed is None else random.getrandbits(64)
-            state = self.env.reset()
+            state = self.env.reset() if seed is None else self.env.reset(seed=random.getrandbits(64))
+            stats = EpisodesStats()
             done = False
 
             while not done:
@@ -62,42 +61,34 @@ class QLearning:
         else:
             return np.argmax(self.qtable[state])
 
-    def evaluate(self) -> EvaluationStats:
+    def evaluate(self, seed=None) -> EvaluationResult:
         total_epochs = 0
         total_penalties = 0
+        stat_list = []
 
         for _ in range(self.params.episodes):
-            state = self.env.reset()
+            state = self.env.reset() if seed is None else self.env.reset(seed=random.getrandbits(64))
+            stats = EpisodesStats()
             epochs = 0
-            penalties = 0
             reward = 0
             done = False
+
             while not done:
                 action = np.argmax(self.qtable[state])
                 state, reward, done, _ = self.env.step(action)
-                if reward < 0:
-                    penalties += 1
                 epochs += 1
+                total_penalties += 1 if reward < 0 else 0
+                stats.total_reward += reward
+                stats.penalty_count += 1 if reward < 0 else 0
 
             total_epochs += epochs
-            total_penalties += penalties
-        return EvaluationStats(
+            stat_list += [stats]
+
+        return EvaluationResult(
             avg_epoch_count=(total_epochs / self.params.episodes),
-            avg_penalty=(total_penalties / self.params.episodes)
+            avg_penalty=(total_penalties / self.params.episodes),
+            stats=stat_list
         )
-
-    def play(self, seed=0xDEADBEEF, delay=1.0):
-        state = self.env.reset(seed=seed)
-        done = False
-        while not done:
-            self.env.render()
-            action = np.argmax(self.qtable[state])
-            state, _, done, _ = self.env.step(action)
-            sleep(delay)
-        self.env.render()
-
-    def load_qtable(self, filename):
-        self.qtable = np.loadtxt(filename)
 
     def save_qtable(self, filename):
         np.savetxt(filename, self.qtable)
