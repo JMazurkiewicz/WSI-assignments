@@ -1,6 +1,9 @@
 # Author: Jakub Mazurkiewicz
 from argparse import ArgumentParser
+from itertools import chain
 import gym
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import qlearning as ql
 
@@ -38,25 +41,20 @@ if __name__ == '__main__':
 
     hyperparameters = parse_hyperparameters()
     print(hyperparameters)
+
     algo = ql.QLearning(env, hyperparameters)
-    learning_stats = algo.learn()
+    learning_stats, evaluation_stats = algo.learn()
+    ql.make_stats_plot(learning_stats, 'Learning process')
     algo.save_qtable('qtable.log')
 
-    evaluation_stats = algo.evaluate()
-    print(f'Average epochs per episode: {evaluation_stats.avg_epoch_count}')
-    print(f'Average penalty per episode: {evaluation_stats.avg_penalty}')
+    for stat in evaluation_stats:
+        episode = stat.learning_episodes + 1
+        ql.make_stats_plot(stat.stats, f'Evaluation while learning (after {episode} episodes)')
 
-    plt.figure()
-    plt.scatter(range(1, hyperparameters.episodes+1), [stat.penalty_count for stat in learning_stats], s=3)
-    plt.xlabel('Numer epizodu')
-    plt.ylabel('Ilość przyznanych kar')
-    plt.title('Ilość przyznanych kar na epizod')
-    plt.grid(True)
+    episodes = [f'After episode {stats.learning_episodes + 1}' for stats in evaluation_stats]
+    avg_epoch_count = [stats.avg_epoch_count for stats in evaluation_stats]
+    avg_penalty = [stats.avg_penalty for stats in evaluation_stats]
+    summary = np.transpose([episodes, avg_epoch_count, avg_penalty])
+    print(pd.DataFrame(summary, columns=['Episode', 'Average epochs per episode', 'Average penalty per episode']))
 
-    plt.figure()
-    plt.scatter(range(1, hyperparameters.episodes+1), [stat.total_reward for stat in learning_stats], s=3)
-    plt.xlabel('Numer epizodu')
-    plt.ylabel('Suma nagród')
-    plt.title('Suma nagród w zależności od epizodu')
-    plt.grid(True)
     plt.show()
