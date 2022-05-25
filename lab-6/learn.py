@@ -34,14 +34,9 @@ def parse_hyperparameters():
     return params
 
 if __name__ == '__main__':
-    # Environment:
-    # * Blue letter - passenger pick-up location
-    # * Purple letter - passenger's destination
     env = gym.make('Taxi-v3')
-
     hyperparameters = parse_hyperparameters()
     print(hyperparameters)
-
     algo = ql.QLearning(env, hyperparameters)
     learning_stats, evaluation_stats = algo.learn()
     ql.make_stats_plot(learning_stats, 'Learning process')
