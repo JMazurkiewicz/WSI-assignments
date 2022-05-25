@@ -1,0 +1,2 @@
+# Exclude Jupyter files from stats
+*.ipynb linguist-documentation
