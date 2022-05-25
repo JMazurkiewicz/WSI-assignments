@@ -37,7 +37,7 @@ if __name__ == '__main__':
     # Environment:
     # * Blue letter - passenger pick-up location
     # * Purple letter - passenger's destination
-    env = gym.make("Taxi-v3")
+    env = gym.make('Taxi-v3')
 
     hyperparameters = parse_hyperparameters()
     print(hyperparameters)
@@ -49,12 +49,11 @@ if __name__ == '__main__':
 
     for stat in evaluation_stats:
         episode = stat.learning_episodes + 1
-        ql.make_stats_plot(stat.stats, f'Evaluation while learning (after {episode} episodes)')
+        ql.make_stats_plot(stat.stats, f'Evaluation while learning (after {episode} episodes of learning)')
 
     episodes = [f'After episode {stats.learning_episodes + 1}' for stats in evaluation_stats]
     avg_epoch_count = [stats.avg_epoch_count for stats in evaluation_stats]
     avg_penalty = [stats.avg_penalty for stats in evaluation_stats]
     summary = np.transpose([episodes, avg_epoch_count, avg_penalty])
     print(pd.DataFrame(summary, columns=['Episode', 'Average epochs per episode', 'Average penalty per episode']))
-
     plt.show()
