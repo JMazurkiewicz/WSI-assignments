@@ -1,6 +1,5 @@
 # Author: Jakub Mazurkiewicz
 from argparse import ArgumentParser
-from itertools import chain
 import gym
 import numpy as np
 import pandas as pd

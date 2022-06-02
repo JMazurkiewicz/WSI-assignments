@@ -1,3 +1,4 @@
+# Author: Jakub Mazurkiewicz
 import random
 import sys
 from time import sleep
