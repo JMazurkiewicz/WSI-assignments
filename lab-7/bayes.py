@@ -3,32 +3,34 @@ import numpy as np
 
 class NaiveBayes:
     def __init__(self, x_train, y_train):
-        sample_count, feature_count = x_train.shape
+        sample_count, attrib_count = x_train.shape
         self.classes = np.unique(y_train)
-        class_count = len(self.classes)
+        self.class_count = len(self.classes)
 
-        self.mean = np.zeros((class_count, feature_count))
-        self.var = np.zeros((class_count, feature_count))
-        self.priors = np.zeros(class_count)
+        self.mean = np.zeros((self.class_count, attrib_count))
+        self.stdev = np.zeros((self.class_count, attrib_count))
+        self.prob = np.zeros(self.class_count)
 
         for i, c in enumerate(self.classes):
-            xc = x_train[y_train == c]
-            self.mean[i, :] = xc.mean(axis=0)
-            self.var[i, :] = xc.var(axis=0)
-            self.priors[i] = xc.shape[0] / sample_count
+            x_of_c = x_train[y_train == c]
+            self.mean[i] = x_of_c.mean(axis=0)
+            self.stdev[i] = x_of_c.std(axis=0)
+            self.prob[i] = x_of_c.shape[0] / sample_count
 
     def classify(self, x):
-        return [self.classify_one(one) for one in x]
+        return [self._classify_one(one) for one in x]
 
-    def classify_one(self, x):
-        posteriors = []
-        for i, c in enumerate(self.classes):
-            prior = np.log(self.priors[i])
-            posterior = np.sum(np.log(self.pdf(i, x)))
-            posteriors.append(prior + posterior)
-        return self.classes[np.argmax(posteriors)]
+    def _classify_one(self, x):
+        search_table = [
+            np.log(self.prob[i]) + np.sum(x * np.log(self._pdf_normal_dist(i, x)))
+            for i in range(self.class_count)
+        ]
+        predicted = np.argmax(search_table)
+        return self.classes[predicted]
 
-    def pdf(self, class_index, x):
+    def _pdf_normal_dist(self, class_index, x):
         mean = self.mean[class_index]
-        var = self.var[class_index]
-        return np.exp(-((x - mean) ** 2) / (2 * var)) / np.sqrt(2 * np.pi * var)
+        stdev = self.stdev[class_index]
+        part1 = 1 / (stdev * np.sqrt(2 * np.pi))
+        part2 = np.exp(-0.5 * ((x - mean) / stdev) ** 2)
+        return part1 * part2
