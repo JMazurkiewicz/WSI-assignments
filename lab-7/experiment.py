@@ -15,12 +15,12 @@ def compose_train_set(data, chunk_size, chunk_to_skip):
             result += data[j:j+chunk_size]
     return np.array(result)
 
-def run(x, y, chunk_size, chunk_to_skip):
+def run_experiment(x, y, chunk_size, chunk_to_skip):
     x_train = compose_train_set(x, chunk_size, chunk_to_skip)
     y_train = compose_train_set(y, chunk_size, chunk_to_skip)
     algo = NaiveBayes(x_train, y_train)
-    x_test = iris.data[chunk_to_skip:chunk_to_skip+chunk_size]
-    y_test = iris.target[chunk_to_skip:chunk_to_skip+chunk_size]
+    x_test = x[chunk_to_skip:chunk_to_skip+chunk_size]
+    y_test = y[chunk_to_skip:chunk_to_skip+chunk_size]
     results = algo.classify(x_test)
 
     # TODO: more or less stats?
@@ -53,6 +53,6 @@ if __name__ == '__main__':
         Random(args.seed).shuffle(zipped_iris)
         iris.data, iris.target = zip(*zipped_iris)
         chunk_size = iris_size // args.k
-        results = [run(iris.data, iris.target, chunk_size, i) for i in range(args.k)]
+        results = [run_experiment(iris.data, iris.target, chunk_size, i) for i in range(args.k)]
 
         print(f'Average accuracy: {100 * np.mean(results):.2f}%')
