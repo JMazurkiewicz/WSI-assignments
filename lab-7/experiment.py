@@ -8,33 +8,30 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score
 
 from bayes import NaiveBayes
 
-def compose_train_set(data, chunk_size, chunk_to_skip):
+def get_training_and_validating_sets(data, chunk_size, chunk_to_skip):
     result = []
+    skip_pos = chunk_to_skip * chunk_size
     for j in range(0, len(data), chunk_size):
-        if chunk_to_skip != j:
+        if skip_pos != j:
             result += data[j:j+chunk_size]
-    return np.array(result)
+    return np.array(result), np.array(data[skip_pos:skip_pos+chunk_size])
 
 def run_experiment(x, y, chunk_size, chunk_to_skip, test_size):
     x_test = x[:test_size]
     y_test = y[:test_size]
-    x = x[test_size:]
-    y = y[test_size:]
-
-    x_train = compose_train_set(x, chunk_size, chunk_to_skip)
-    y_train = compose_train_set(y, chunk_size, chunk_to_skip)
+    x_train, x_valid = get_training_and_validating_sets(x[test_size:], chunk_size, chunk_to_skip)
+    y_train, y_valid = get_training_and_validating_sets(y[test_size:], chunk_size, chunk_to_skip)
     algo = NaiveBayes(x_train, y_train)
-    x_valid = x[chunk_to_skip:chunk_to_skip+chunk_size]
-    y_valid = y[chunk_to_skip:chunk_to_skip+chunk_size]
     results = algo.classify(x_valid)
 
     print(f'Confusion matrix:\n{confusion_matrix(y_valid, results)}')
     print(f'Precision: {list(precision_score(y_valid, results, average=None))}')
     accuracy_valid = accuracy_score(y_valid, results)
     print(f'Accuracy: {100 * accuracy_valid:.2f}%')
+
     accuracy_test = accuracy_score(y_test, algo.classify(x_test))
-    print(f'Accuracy of test set: {100 * accuracy_test:.2f}%')
-    return accuracy_valid
+    print(f'Accuracy for test set: {100 * accuracy_test:.2f}%')
+    return accuracy_valid, accuracy_test
 
 if __name__ == '__main__':
     argparser = ArgumentParser(description='Naive Bayes classifier')
@@ -51,22 +48,31 @@ if __name__ == '__main__':
         help=f'Size of testing set (default: 30)'
     )
     args = argparser.parse_args()
+    seed = args.seed
+    k = args.k
+    test_size = args.test_size
 
     iris = load_iris()
-    iris_size = len(iris.data)
-    if iris_size % args.k != 0:
-        print(f'Please pick `k` such that {iris_size} would be divisible '
-              f'by it ({iris_size} % {args.k} = {iris_size % args.k})')
+    train_valid_size = len(iris.data) - test_size
+    if train_valid_size % k != 0:
+        print(f'Please pick `k` such that {train_valid_size} would be divisible '
+              f'by it ({train_valid_size} % {k} = {train_valid_size % k})')
     else:
         zipped_iris = list(zip(iris.data, iris.target))
-        Random(args.seed).shuffle(zipped_iris)
+        Random(seed).shuffle(zipped_iris)
         iris.data, iris.target = zip(*zipped_iris)
-        chunk_size = iris_size // args.k
+        chunk_size = train_valid_size // k
 
-        results = []
-        for i in range(args.k):
-            print(f'==============> {i}')
-            result = run_experiment(iris.data, iris.target, chunk_size, i, args.test_size)
-            results.append(result)
-
-        print(f'Average accuracy: {100 * np.mean(results):.2f}%')
+        print(f'Training set size:   {(k - 1) * chunk_size}')
+        print(f'Validating set size: {chunk_size}')
+        print(f'Testing set size :   {test_size}')
+        results_valid = []
+        results_test = []
+        for i in range(k):
+            print('{:=^45}'.format(f' k = {i} '))
+            accuracy_valid, accuracy_test = run_experiment(iris.data, iris.target, chunk_size, i, test_size)
+            results_valid.append(accuracy_valid)
+            results_test.append(accuracy_test)
+        print('{:=^45}'.format(' SUMMARY '))
+        print(f'Average accuracy (validating set): {100 * np.mean(results_valid):.2f}%')
+        print(f'Average accuracy (testing set): {100 * np.mean(results_test):.2f}%')
