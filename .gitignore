@@ -8,16 +8,5 @@ __pycache__/
 __test*.py
 __*.sh
 
-# Other binary files
-*.zip
-*.pdf
-*.png
-~$*
-
-# Documentation
-*.md
-*.html
-!README.md
+# Logs
 *.log
-img/
-*.xlsx

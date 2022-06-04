@@ -37,4 +37,4 @@ Program `mnist28.py` requires some extra files from [http://yann.lecun.com/exdb/
 
 ## Notes
 
-File `documentation.ipynb` contains documentation in Polish.
+File `documentation.ipynb` contains documentation in Polish language.
