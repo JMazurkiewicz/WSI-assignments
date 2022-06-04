@@ -22,7 +22,7 @@ class Hyperparameters:
         ])
 
 @dataclass
-class EpisodesStats:
+class EpisodeStats:
     penalty_count: int = 0
     total_reward: int = 0
 
@@ -31,7 +31,7 @@ class EvaluationResult:
     avg_epoch_count: float
     avg_penalty: float
     learning_episodes: int
-    stats: List[EpisodesStats]
+    stats: List[EpisodeStats]
 
     def __repr__(self):
         return '\n'.join([
@@ -40,7 +40,7 @@ class EvaluationResult:
             f'* Average penalty per episode: {self.avg_penalty}'
         ])
 
-def make_stats_plot(stats: List[EpisodesStats], major_title: str):
+def make_stats_plot(stats: List[EpisodeStats], major_title: str):
     episodes = len(stats)
     fig, axes= plt.subplots(2)
     fig.suptitle(major_title)
@@ -62,14 +62,14 @@ class QLearning:
         self.qtable = np.zeros((self.env.observation_space.n, self.env.action_space.n))
         self.total_learning_episodes = 0
 
-    def learn(self, seed=None) -> Tuple[List[EpisodesStats], List[EvaluationResult]]:
+    def learn(self, seed=None) -> Tuple[List[EpisodeStats], List[EvaluationResult]]:
         learning_stats = []
         evaluation_stats = []
         stop_point_for_evaluation = self.params.episodes // 4
 
         for episode in range(self.params.episodes):
             state = self.env.reset() if seed is None else self.env.reset(seed=random.getrandbits(64))
-            stats = EpisodesStats()
+            stats = EpisodeStats()
             done = False
 
             while not done:
@@ -100,7 +100,7 @@ class QLearning:
 
         for _ in range(self.params.episodes):
             state = self.env.reset() if seed is None else self.env.reset(seed=random.getrandbits(64))
-            stats = EpisodesStats()
+            stats = EpisodeStats()
             epochs = 0
             reward = 0
             done = False
