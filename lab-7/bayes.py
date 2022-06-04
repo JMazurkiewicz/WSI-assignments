@@ -9,7 +9,7 @@ class NaiveBayes:
 
         self.mean = np.zeros((self.class_count, attrib_count))
         self.stdev = np.zeros((self.class_count, attrib_count))
-        self.prob = np.zeros(self.class_count)
+        self.prob = np.zeros([self.class_count])
 
         for i, c in enumerate(self.classes):
             x_of_c = x_train[y_train == c]
@@ -22,7 +22,7 @@ class NaiveBayes:
 
     def _classify_one(self, x):
         search_table = [
-            np.log(self.prob[i]) + np.sum(x * np.log(self._pdf_normal_dist(i, x)))
+            self.prob[i] * np.product(self._pdf_normal_dist(i, x))
             for i in range(self.class_count)
         ]
         predicted = np.argmax(search_table)

@@ -4,7 +4,7 @@ from random import Random
 
 import numpy as np
 from sklearn.datasets import load_iris
-from sklearn.metrics import confusion_matrix, recall_score, precision_score
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score
 
 from bayes import NaiveBayes
 
@@ -15,21 +15,26 @@ def compose_train_set(data, chunk_size, chunk_to_skip):
             result += data[j:j+chunk_size]
     return np.array(result)
 
-def run_experiment(x, y, chunk_size, chunk_to_skip):
+def run_experiment(x, y, chunk_size, chunk_to_skip, test_size):
+    x_test = x[:test_size]
+    y_test = y[:test_size]
+    x = x[test_size:]
+    y = y[test_size:]
+
     x_train = compose_train_set(x, chunk_size, chunk_to_skip)
     y_train = compose_train_set(y, chunk_size, chunk_to_skip)
     algo = NaiveBayes(x_train, y_train)
-    x_test = x[chunk_to_skip:chunk_to_skip+chunk_size]
-    y_test = y[chunk_to_skip:chunk_to_skip+chunk_size]
-    results = algo.classify(x_test)
+    x_valid = x[chunk_to_skip:chunk_to_skip+chunk_size]
+    y_valid = y[chunk_to_skip:chunk_to_skip+chunk_size]
+    results = algo.classify(x_valid)
 
-    # TODO: more or less stats?
-    print(f'Confusion matrix:\n{confusion_matrix(y_test, results)}')
-    print(f'Precision: {list(precision_score(y_test, results, average=None))}')
-    accuracy = sum(a == b for a, b in zip(results, y_test)) / len(results)
-    print(f'Accuracy: {100 * accuracy:.2f}%')
-    print(f'Recall: {list(recall_score(y_test, results, average=None))}')
-    return accuracy
+    print(f'Confusion matrix:\n{confusion_matrix(y_valid, results)}')
+    print(f'Precision: {list(precision_score(y_valid, results, average=None))}')
+    accuracy_valid = accuracy_score(y_valid, results)
+    print(f'Accuracy: {100 * accuracy_valid:.2f}%')
+    accuracy_test = accuracy_score(y_test, algo.classify(x_test))
+    print(f'Accuracy of test set: {100 * accuracy_test:.2f}%')
+    return accuracy_valid
 
 if __name__ == '__main__':
     argparser = ArgumentParser(description='Naive Bayes classifier')
@@ -40,6 +45,10 @@ if __name__ == '__main__':
     argparser.add_argument(
         '-k', dest='k', type=int, default=5,
         help=f'Parameter for cross-validation - chunk count (default: 5)'
+    )
+    argparser.add_argument(
+        '-t', '--test-size', dest='test_size', type=int, default=30,
+        help=f'Size of testing set (default: 30)'
     )
     args = argparser.parse_args()
 
@@ -53,6 +62,11 @@ if __name__ == '__main__':
         Random(args.seed).shuffle(zipped_iris)
         iris.data, iris.target = zip(*zipped_iris)
         chunk_size = iris_size // args.k
-        results = [run_experiment(iris.data, iris.target, chunk_size, i) for i in range(args.k)]
+
+        results = []
+        for i in range(args.k):
+            print(f'==============> {i}')
+            result = run_experiment(iris.data, iris.target, chunk_size, i, args.test_size)
+            results.append(result)
 
         print(f'Average accuracy: {100 * np.mean(results):.2f}%')
