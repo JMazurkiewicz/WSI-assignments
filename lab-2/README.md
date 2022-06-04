@@ -21,3 +21,7 @@ python main.py <prob_1> <pop_size> <crossover_prob> <mut_prob> <iter_limit>
 * `crossover_prob` - probability of crossover
 * `mut_prob` - probability of mutation
 * `iter_limit` - iteration limit
+
+## Notes
+
+File `documentation.pdf` contains documentation in Polish language.

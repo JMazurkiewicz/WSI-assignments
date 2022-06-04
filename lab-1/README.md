@@ -19,3 +19,7 @@ Programs `f.py` and `g.py` find local minimum of $f$ and $g$ functions:
 python f.py <starting-point> <step-size> <iteration-limit>
 python g.py <x> <y> <step-size> <iteration-limit> # starting-point = (x, y)
 ```
+
+## Notes
+
+File `documentation.pdf` contains documentation in Polish language.
