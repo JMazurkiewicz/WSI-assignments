@@ -32,4 +32,4 @@ Default value of `Q-table-filename` is `qtable.log`.
 
 ## Notes
 
-File `documentation.ipynb` contains documentation in Polish.
+File `documentation.ipynb` contains documentation in Polish language.
