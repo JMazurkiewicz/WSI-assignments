@@ -25,3 +25,7 @@ Available modes:
 ## Extra scripts
 
 Scripts from `two_player_games` directory come from [`two-player-games`](https://github.com/lychanl/two-player-games) repository by [lychanl](https://github.com/lychanl).
+
+## Notes
+
+File `documentation.pdf` contains documentation in Polish language.

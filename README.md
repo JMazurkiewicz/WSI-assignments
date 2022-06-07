@@ -6,6 +6,7 @@
 * `lab-2` - evolutionary algorithm
 * `lab-3` - minimax algorithm with alpha beta pruning
 * `lab-5` - multilayer perceptron and gradient optimization
+* `lab-6` - Q-learning algorithm
 * `lab-7` - naive bayes classifier
 
 ## Get repository
