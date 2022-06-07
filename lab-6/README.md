@@ -4,6 +4,8 @@
 
 Goal: implement Q-learning algorithm
 
+Score: **7/7**
+
 ## About
 
 Program `learn.py` performs training of Q-learning algorithm for `Taxi-v3` problem from `gym` library.
