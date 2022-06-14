@@ -4,6 +4,8 @@
 
 Goal: implement naive bayes classifier
 
+Score: **6/7**
+
 ## About
 
 Program `experiment.py` trains naive Bayes classifier with *The Iris Dataset* and then runs tests.
